@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FitBuddy - AI Fitness Assistant</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+    <div class="page">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">💪</span>
+                <span>FitBuddy</span>
+            </div>
+
+            <div class="tagline">
+                AI-Powered Fitness Assistant
+            </div>
+        </header>
+
+
+        <!-- Main Section -->
+        <main class="container">
+
+            <!-- Introduction -->
+            <section class="hero">
+                <div class="hero-badge">
+                    ✨ Personalized with AI
+                </div>
+
+                <h1>
+                    Your Fitness Journey,
+                    <span>Smarter.</span>
+                </h1>
+
+                <p>
+                    Tell us about yourself and let FitBuddy create
+                    a personalized workout and nutrition plan for you.
+                </p>
+            </section>
+
+
+            <!-- Form Card -->
+            <section class="card">
+
+                <div class="card-title">
+                    <h2>Let's Get Started</h2>
+                    <p>Enter your details to create your personalized plan.</p>
+                </div>
+
+
+                <form id="fitnessForm">
+
+                    <!-- Name -->
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Enter your name"
+                            required
+                        >
+                    </div>
+
+
+                    <!-- Age and Weight -->
+                    <div class="form-row">
+
+                        <div class="form-group">
+                            <label for="age">Age</label>
+
+                            <input
+                                type="number"
+                                id="age"
+                                name="age"
+                                placeholder="18"
+                                min="1"
+                                max="100"
+                                required
+                            >
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="weight">Weight (kg)</label>
+
+                            <input
+                                type="number"
+                                id="weight"
+                                name="weight"
+                                placeholder="55"
+                                min="1"
+                                max="300"
+                                step="0.1"
+                                required
+                            >
+                        </div>
+
+                    </div>
+
+
+                    <!-- Goal -->
+                    <div class="form-group">
+                        <label for="goal">Fitness Goal</label>
+
+                        <select id="goal" name="goal" required>
+
+                            <option value="">
+                                Select your goal
+                            </option>
+
+                            <option value="Weight Loss">
+                                Weight Loss
+                            </option>
+
+                            <option value="Muscle Gain">
+                                Muscle Gain
+                            </option>
+
+                            <option value="General Fitness">
+                                General Fitness
+                            </option>
+
+                            <option value="Strength">
+                                Strength
+                            </option>
+
+                            <option value="Flexibility">
+                                Flexibility
+                            </option>
+
+                        </select>
+                    </div>
+
+
+                    <!-- Intensity -->
+                    <div class="form-group">
+                        <label for="intensity">Workout Intensity</label>
+
+                        <select id="intensity" name="intensity" required>
+
+                            <option value="">
+                                Select intensity
+                            </option>
+
+                            <option value="Low">
+                                Low
+                            </option>
+
+                            <option value="Medium">
+                                Medium
+                            </option>
+
+                            <option value="High">
+                                High
+                            </option>
+
+                        </select>
+                    </div>
+
+
+                    <!-- Submit -->
+                    <button
+                        type="submit"
+                        id="generateButton"
+                        class="generate-button"
+                    >
+                        <span>Generate My Plan</span>
+                        <span>→</span>
+                    </button>
+
+                </form>
+
+
+                <!-- Loading -->
+                <div id="loading" class="loading hidden">
+
+                    <div class="spinner"></div>
+
+                    <h3>Creating your plan...</h3>
+
+                    <p>
+                        FitBuddy AI is preparing your personalized
+                        workout and nutrition plan.
+                    </p>
+
+                </div>
+
+
+                <!-- Error -->
+                <div id="errorBox" class="error-box hidden"></div>
+
+            </section>
+
+
+            <!-- Result Section -->
+            <section id="resultSection" class="results hidden">
+
+                <!-- User Summary -->
+                <div class="result-header">
+
+                    <div>
+                        <div class="hero-badge">
+                            ✓ Plan Generated
+                        </div>
+
+                        <h2>
+                            Your Personalized Plan
+                        </h2>
+
+                        <p id="welcomeText"></p>
+                    </div>
+
+                </div>
+
+
+                <!-- User Information -->
+                <div class="info-grid">
+
+                    <div class="info-card">
+                        <span>👤</span>
+                        <small>Name</small>
+                        <strong id="resultName">-</strong>
+                    </div>
+
+                    <div class="info-card">
+                        <span>🎂</span>
+                        <small>Age</small>
+                        <strong id="resultAge">-</strong>
+                    </div>
+
+                    <div class="info-card">
+                        <span>⚖️</span>
+                        <small>Weight</small>
+                        <strong id="resultWeight">-</strong>
+                    </div>
+
+                    <div class="info-card">
+                        <span>🎯</span>
+                        <small>Goal</small>
+                        <strong id="resultGoal">-</strong>
+                    </div>
+
+                    <div class="info-card">
+                        <span>🔥</span>
+                        <small>Intensity</small>
+                        <strong id="resultIntensity">-</strong>
+                    </div>
+
+                </div>
+
+
+                <!-- Workout -->
+                <div class="result-card">
+
+                    <div class="result-card-header">
+                        <span class="result-icon">🏋️</span>
+
+                        <div>
+                            <h3>Workout Plan</h3>
+                            <p>Your AI-generated fitness routine</p>
+                        </div>
+                    </div>
+
+                    <div
+                        id="workoutContent"
+                        class="content-box"
+                    ></div>
+
+                </div>
+
+
+                <!-- Nutrition -->
+                <div class="result-card nutrition-card">
+
+                    <div class="result-card-header">
+                        <span class="result-icon">🥗</span>
+
+                        <div>
+                            <h3>Nutrition Tips</h3>
+                            <p>Simple guidance for your fitness goal</p>
+                        </div>
+                    </div>
+
+                    <div
+                        id="nutritionContent"
+                        class="content-box"
+                    ></div>
+
+                </div>
+
+<div class="feedback-card">
+
+    <div class="feedback-header">
+        <span class="feedback-icon">💬</span>
+        <div>
+            <h3>How was your plan?</h3>
+            <p>Your feedback helps us improve FitBuddy.</p>
+        </div>
+    </div>
+
+    <div class="feedback-buttons">
+        <button type="button" class="feedback-button" id="helpfulButton">
+            👍 Helpful
+        </button>
+
+        <button type="button" class="feedback-button" id="notHelpfulButton">
+            👎 Not Helpful
+        </button>
+    </div>
+
+    <div id="feedbackMessage" class="feedback-message hidden"></div>
+
+</div>
+                
+                
+                <!-- Generate Again -->
+                <button
+                    id="newPlanButton"
+                    class="secondary-button"
+                >
+                    ← Create Another Plan
+                </button>
+
+            </section>
+
+        </main>
+
+
+        <!-- Footer -->
+        <footer>
+            <p>
+                FitBuddy © 2026 · AI-powered fitness assistance
+            </p>
+
+            <p class="disclaimer">
+                General wellness guidance only. Consult a qualified
+                healthcare professional for medical concerns.
+            </p>
+        </footer>
+
+    </div>
+
+
+    <script src="/static/script.js"></script>
+
+</body>
+</html>
