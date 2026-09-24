@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 from app.database import engine, Base, get_db
@@ -17,9 +18,13 @@ app = FastAPI(title="FitBuddy - AI Fitness Assistant")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
+# --------------------------------------------------
+# Home Page
+# --------------------------------------------------
+
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to FitBuddy AI API!"}
+    return FileResponse("static/index.html")
 
 
 # --------------------------------------------------
@@ -44,7 +49,6 @@ def create_workout(
     db.commit()
     db.refresh(db_user)
 
-
     workout_content = ai_service.generate_workout_plan(
         name=db_user.name,
         age=db_user.age,
@@ -53,11 +57,9 @@ def create_workout(
         intensity=db_user.intensity
     )
 
-
     nutrition_tip = ai_service.generate_nutrition_tip(
         goal=db_user.goal
     )
-
 
     db_plan = WorkoutPlan(
         user_id=db_user.id,
@@ -68,7 +70,6 @@ def create_workout(
     db.add(db_plan)
     db.commit()
     db.refresh(db_plan)
-
 
     return db_plan
 
@@ -93,18 +94,15 @@ def submit_feedback(
             detail="User not found"
         )
 
-
     feedback = Feedback(
         user_id=feedback_data.user_id,
         rating=feedback_data.rating,
         comment=feedback_data.comment
     )
 
-
     db.add(feedback)
     db.commit()
     db.refresh(feedback)
-
 
     return {
         "message": "Feedback submitted successfully!",
